@@ -227,10 +227,20 @@ void Account::removeAllNegative(vector<Account> &accounts)
 // appear only once in the result vector with a balance equal to the sum of both balances
 // in the parameter vectors.
 vector<Account> Account::combine(vector<Account> A, vector<Account> B) {
-    vector<Account> result = vector<Account>();
-
-    // YOUR CODE HERE
-
+    vector<Account> result = vector<Account>(A);
+    for(int i=0; i<B.size(); i++) {
+        bool found = false;
+        for (int j=0; j<result.size(); j++) {
+            if ((B[i].getAccNo() == result[j].getAccNo()) &&
+            (B[i].getType() == result[j].getType())) {
+                result[j].setBalance(result[j].getBalance() + B[i].getBalance());
+                found = true;
+            }
+        }
+        if (!found) {
+            result.push_back(B[i]);
+        }
+    }
     return result;
 }
 
