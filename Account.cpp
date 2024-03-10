@@ -1,5 +1,6 @@
 #include <string>
 #include <vector>
+#include  <array>
 #include <list>
 #include <iostream>
 
@@ -70,6 +71,9 @@ public:
     // type within the vector of Account's. Returns -1 if no such Account exists.
     static int findByType(vector<Account> accounts, AccountType type);
 
+    template<typename Iterator>
+    static int findByType(Iterator begin, Iterator end, AccountType type);
+
     // EXERCISE #2: Returns de count of Account's of the parameter type that exist in the
     // parameter vector.
     static int countByType(vector<Account> accounts, AccountType type);
@@ -116,6 +120,30 @@ int Account::findByType(vector<Account> accounts, AccountType type)
     return -1;
 
 }
+
+template<typename Iterator>
+int Account::findByType(Iterator begin, Iterator end, AccountType type) {
+    int pos = 0;
+    for (auto it=begin; it!=end; it++) {
+        if (it->getType() == type) {
+            return pos;
+        }
+        pos++;
+    }
+    return -1;
+}
+
+// int Account::findByType(array<Account,N> accounts, AccountType type)
+// {
+
+//     for (int i=0; i<accounts.size(); i++) {
+//         if (accounts[i].getType() == type) {
+//             return i;
+//         }
+//     }
+//     return -1;
+
+// }
 
 // EXERCISE #2: Returns de count of Account's of the parameter type that exist in the
 // parameter vector.
@@ -273,7 +301,10 @@ vector<Account> Account::combine(vector<Account> A, vector<Account> B) {
         vector<Account> emptyVector;
         vector<Account> savingsVector{sa1, sa2, sa3, sa4, sa5};
         vector<Account> checkingVector{ca1, ca2, ca3};
+
         vector<Account> mixedVector1{sa1, sa2, sa3, sa4, sa5, ca1, ca2, ca3};
+        array<Account,8> mixedArray1{sa1, sa2, sa3, sa4, sa5, ca1, ca2, ca3};
+        list<Account> mixedList1{sa1, sa2, sa3, sa4, sa5, ca1, ca2, ca3};
 
         list<Account> mixedContainer1{sa1, sa2, sa3, sa4, sa5, ca1, ca2, ca3};
 
@@ -293,6 +324,10 @@ vector<Account> Account::combine(vector<Account> A, vector<Account> B) {
         cout << "FindByType #3: " << ((Account::findByType(savingsVector, AccountType::CHECKING) == -1) ? "Passed" : "Failed") << endl; // -1
         cout << "FindByType #4: " << ((Account::findByType(mixedVector1, AccountType::CHECKING) == 5) ? "Passed" : "Failed") << endl;   // 5
         cout << "FindByType #5: " << ((Account::findByType(mixedVector1, AccountType::SAVINGS) == 0) ? "Passed" : "Failed") << endl;    // 0
+
+        cout << "FindByType #5 IT vector: " << ((Account::findByType(mixedVector1.begin(),mixedVector1.end(), AccountType::SAVINGS) == 0) ? "Passed" : "Failed") << endl;    // 0
+        cout << "FindByType #5 IT array : " << ((Account::findByType(mixedArray1.begin(),mixedArray1.end(), AccountType::SAVINGS) == 0) ? "Passed" : "Failed") << endl;    // 0
+        cout << "FindByType #5 IT list : " << ((Account::findByType(mixedList1.begin(),mixedList1.end(), AccountType::SAVINGS) == 0) ? "Passed" : "Failed") << endl;    // 0
 
 
         cout << "Test countByType" << endl;
